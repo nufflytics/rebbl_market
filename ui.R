@@ -25,10 +25,12 @@ dashboardPage(title = "REBBL Player Market",
                                           "))),
                 fluidRow(
                   box(width=12, title = "Race", collapsible = T,
-                      uiOutput("race_ui")
+                      uiOutput("race_ui"),
+                      div(class="hide_me",textOutput("team_summary_ready"))
                   ),
                   conditionalPanel(
-                    "input.race_picker != null",
+                    #"input.race_picker != null",
+                    "output.team_summary_ready == '1'",
                     box(width = 12, title = "Players available",
                         DT::dataTableOutput("team_summary")
                     )

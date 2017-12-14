@@ -56,6 +56,9 @@ shinyServer(function(input, output) {
                          '</div>')))
   
   
+  team_summary_ready <- reactiveValues(ready = FALSE)
+  
+  output$team_summary_ready = renderText(as.integer(team_summary_ready[["ready"]]))
   
   update_data <- function() {
     if(input$race_picker %in% names(team_data) | input$race_picker == "") return(NULL)
@@ -68,6 +71,8 @@ shinyServer(function(input, output) {
                                  )
     
     team_data[[input$race_picker]] = get_player_data(api_response)
+    
+    team_summary_ready[["ready"]] <- TRUE
   }
   
   observeEvent(input$race_picker,
@@ -76,7 +81,6 @@ shinyServer(function(input, output) {
 
   output$team_summary <- DT::renderDataTable(
     {
-      validate(need(input$race_picker, label = "Race"), need(team_data[[input$race_picker]], label = "Player data"))
       DT::datatable(
         team_data[[input$race_picker]],
         class = "display compact",

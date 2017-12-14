@@ -5,3 +5,7 @@
 .btn {
   margin-top: 5px;
 }
+
+.hide_me {
+  display: none;
+}
