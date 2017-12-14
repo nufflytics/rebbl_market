@@ -37,7 +37,11 @@ get_player_summary <- function(t) {
 }
 
 get_player_data <- function(team_data) {
-  map(team_data, get_player_summary) %>% discard(is.null) %>% bind_rows %>% arrange(desc(TV))
+  players <- map(team_data, get_player_summary) %>% discard(is.null) %>% bind_rows %>% arrange(desc(TV))
+  
+  if (nrow(players)==0) return(data_frame(Player = "None available",	Type="",	Level="",	SPP="",	TV="", Injuries="",	`Acquired Skills`=""))
+  
+  players
 }
 
 shinyServer(function(input, output) {

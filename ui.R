@@ -31,7 +31,7 @@ dashboardPage(title = "REBBL Player Market",
                   conditionalPanel(
                     "input.race_picker != null",
                     #"output.team_summary_ready == '1'",
-                    box(width = 12, title = "Players available",
+                    box(width = 12, title = "Players for sale",
                         DT::dataTableOutput("team_summary")
                     )
                   )
