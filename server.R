@@ -12,7 +12,7 @@ get_player_summary <- function(t) {
   
   map_df(t$roster, 
          ~(keep(., names(.)!="attributes") %>% 
-             modify_at("casualties_state", ~map(.,state_to_casualty) %>% glue::collapse(", ")) %>% 
+             modify_at("casualties_state_id", ~map(.,id_to_casualty) %>% glue::collapse(", ")) %>% 
              modify_at("skills", ~map(., ~glue::glue("<img src='img/skills/{.}.png' title='{stringr::str_replace_all(.,'([a-z])([A-Z])','\\\\1 \\\\2')}' width=30 style='padding: 1px'>")) %>% glue::collapse("")) %>% 
              modify_depth(1,fill_nulls, "") %>% 
              modify_at("name",as.character)
@@ -30,7 +30,7 @@ get_player_summary <- function(t) {
       Level=level,
       SPP = xp,
       TV = value,
-      Injuries = casualties_state,
+      Injuries = casualties_state_id,
       `Acquired Skills` = skills
     )
   
