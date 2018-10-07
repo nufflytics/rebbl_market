@@ -22,9 +22,11 @@ get_player_summary <- function(t) {
     mutate(
       Type = stringr::str_replace_all(type, c(".*_"="", "([a-z])([A-Z])"="\\1 \\2")),
       nskills = stringr::str_count(skills,"<img"),
-      skills = ifelse(level-nskills >1, paste0(skills,'<img src="img/skills/PositiveRookieSkills.png" title="Pending Level up" width=30 stype="padding: 1px">'), skills)
+      skills = ifelse(level-nskills >1, paste0(skills,'<img src="img/skills/PositiveRookieSkills.png" title="Pending Level up" width=30 stype="padding: 1px">'), skills),
+      Team = t$team$name
     ) %>% 
     select(
+      Team, 
       Player = name,
       Type,
       Level=level,
@@ -69,7 +71,7 @@ shinyServer(function(input, output) {
     
     api_response <- withProgress(message = "Loading players", value = 1,
                                  {teams_response$teams %>% 
-                                   filter(race == stringr::str_replace_all(input$race_picker," ","")) %>% 
+                                   filter(race == stringr::str_replace_all(input$race_picker," ",""), team != "MNG Winners!") %>% 
                                    .$team %>% 
                                    map(~api_team(key, name = .))}
                                  )
@@ -93,7 +95,7 @@ shinyServer(function(input, output) {
         rownames = F,
         options = list(
           dom = "t",
-          pageLength = 16,
+          pageLength = 100,
           ordering = F,
           scrollX = T
         )
