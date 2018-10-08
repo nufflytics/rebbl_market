@@ -96,7 +96,7 @@ shinyServer(function(input, output) {
         options = list(
           dom = "t",
           pageLength = 100,
-          ordering = F,
+          ordering = T,
           scrollX = T
         )
     )
